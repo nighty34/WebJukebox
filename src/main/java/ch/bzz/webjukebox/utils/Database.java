@@ -14,7 +14,9 @@ public class Database {
     private static int port, poolSize;
     private static HikariDataSource hikari;
 
-
+    /**
+     * Opens connection to db
+     */
     private static void openConection(){
         readConfig();
 
@@ -28,10 +30,12 @@ public class Database {
         hikari.addDataSourceProperty("user", username);
         hikari.addDataSourceProperty("password", password);
         hikari.setMaximumPoolSize(poolSize);
-
-
     }
 
+
+    /**
+     * Initilizes database
+     */
     public static void init(){
         openConection();
 
@@ -74,20 +78,38 @@ public class Database {
         }
     }
 
-
+    /**
+     * Creates a preparedstatement
+     * @param con db connection
+     * @param sqlString sql command
+     * @return preparedstatement
+     * @throws SQLException
+     */
     public static PreparedStatement createPreparedStatement(Connection con, String sqlString) throws SQLException {
         return con.prepareStatement(sqlString);
     }
 
+    /**
+     * Closes and reopens db connection/conenctionpool
+     */
     public static void reloadDB(){
         readConfig();
         hikari.close();
+        init();
     }
 
+    /**
+     * Returns connection
+     * @return hikariconnection
+     * @throws SQLException
+     */
     public static Connection getConnection() throws SQLException{
         return hikari.getConnection();
     }
 
+    /**
+     * Reads and saves configuration file
+     */
     private static void readConfig(){
         host = Configuration.getConfig().getString("MySQL.host");
         database = Configuration.getConfig().getString("MySQL.database");
@@ -96,6 +118,8 @@ public class Database {
         poolSize = Configuration.getConfig().getInt("MySQL.poolsize");
         port = Configuration.getConfig().getInt("MySQL.port");
     }
+
+
 
     // Retrieving methods from here onwards
 
