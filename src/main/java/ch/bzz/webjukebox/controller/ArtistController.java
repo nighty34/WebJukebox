@@ -10,7 +10,6 @@ import java.util.Vector;
 
 @RestController
 public class ArtistController {
-
     @GetMapping("/allsongs")
     public Vector<Artist> getAllSongs() {
 
