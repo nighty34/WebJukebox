@@ -26,7 +26,6 @@ public class Configuration {
 
     public static void createIfNotExists() {
 
-        System.out.println(path);
         File configFile = new File(path);
 
         if (configFile.exists()) {
@@ -59,7 +58,6 @@ public class Configuration {
                 "  poolsize: 100";
 
         fileWriter.write(contents);
-        System.out.println("WRITE");
         fileWriter.close();
     }
 
