@@ -1,11 +1,27 @@
 package ch.bzz.webjukebox.model;
 
-public enum Genre {
+public class Genre {
 
-    POP,
-    ROCK,
-    RAP
+    private String name;
+    private int genreID;
 
-    // add further
+    public Genre() {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getGenreID() {
+        return genreID;
+    }
+
+    public void setGenreID(int genreID) {
+        this.genreID = genreID;
+    }
 }

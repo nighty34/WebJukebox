@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public class Configuration {
 
     private static YamlConfig config;
-    private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "config.yaml";;
+    private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "config.yml";;
 
 
     public static void init() {

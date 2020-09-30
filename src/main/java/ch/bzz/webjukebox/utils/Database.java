@@ -96,6 +96,8 @@ public class Database {
         String selectStatement = "select * from music";
 
         Vector<Song> songs = null;
+        Vector<Artist> artists = null;
+        Vector<Genre> genres = null;
 
         try {
             Connection con = getConnection();
@@ -103,20 +105,23 @@ public class Database {
             ResultSet results = pstMusic.executeQuery();
 
             songs = new Vector<>();
+            artists = retrieveAllArtists();
+            genres = retrieveAllGenres();
+
             Song song;
-            Artist artist;
 
             while (results.next()) {
                 song = new Song();
-                song.setArtist(new Artist()); // TODO write code that retrieves the corresponding artist.
+                song.setArtist(artists.get(results.getInt("artistid") - 1)); // TODO write code that retrieves the corresponding artist.
                 // Either do that by first getting a vector of all artists or by only getting the required artist.
+                // --> decided to go for retrieveAllArtists in order to keep sql queries to a minimum.
                 song.setSongID(results.getInt("titleid"));
                 song.setName(results.getString("title"));
                 song.setCoverpath(results.getString("coverpath"));
                 song.setFilepath(results.getString("filepath"));
                 song.setStreams(results.getInt("streams"));
 
-                song.setGenre(Genre.POP); //TODO implement genre queries
+                song.setGenre(genres.get(results.getInt("genreid") - 1));
             }
 
         } catch (SQLException throwables) {
@@ -125,6 +130,35 @@ public class Database {
 
         return songs;
 
+    }
+
+    public static Song retrieveSong(int songID) {
+        String selectStatement = "select * from music where songid=" + songID;
+
+        Song song = null;
+
+
+        try {
+            Connection con = getConnection();
+            PreparedStatement pstMusic = con.prepareStatement(selectStatement);
+            ResultSet result = pstMusic.executeQuery();
+
+            while (result.next()) {
+                song = new Song();
+                song.setArtist(retrieveArtist(result.getInt("artistid")));
+                song.setSongID(result.getInt("titleid"));
+                song.setName(result.getString("title"));
+                song.setCoverpath(result.getString("coverpath"));
+                song.setFilepath(result.getString("filepath"));
+                song.setStreams(result.getInt("streams"));
+                song.setGenre(retrieveGenre(result.getInt("genreid")));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return song;
     }
 
     public static Vector<Artist> retrieveAllArtists() {
@@ -155,7 +189,7 @@ public class Database {
         return artists;
     }
 
-    public static Artist getArtist(int artistID) {
+    public static Artist retrieveArtist(int artistID) {
         String selectStatement = "select * from artist where artistid=" + artistID;
 
         Artist artist = null;
@@ -163,12 +197,12 @@ public class Database {
         try {
             Connection con = getConnection();
             PreparedStatement pstArtist = con.prepareStatement(selectStatement);
-            ResultSet results = pstArtist.executeQuery();
+            ResultSet result = pstArtist.executeQuery();
 
-            while (results.next()) {
+            while (result.next()) {
                 artist = new Artist();
-                artist.setArtistID(results.getInt("artistid"));
-                artist.setName(results.getString("artistname"));
+                artist.setArtistID(result.getInt("artistid"));
+                artist.setName(result.getString("artistname"));
             }
 
 
@@ -177,5 +211,55 @@ public class Database {
         }
 
         return artist;
+    }
+
+    public static Genre retrieveGenre(int genreID) {
+        String selectStatement = "select * from genre where genreid=" + genreID;
+
+        Genre genre = null;
+
+        try {
+            Connection con = getConnection();
+            PreparedStatement pstGenre = con.prepareStatement(selectStatement);
+            ResultSet result = pstGenre.executeQuery();
+
+            while (result.next()) {
+                genre = new Genre();
+                genre.setGenreID(result.getInt("genreid"));
+                genre.setName(result.getString("genrename"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return genre;
+    }
+
+    public static Vector<Genre> retrieveAllGenres() {
+        String selectStatement = "select * from genre";
+
+        Genre genre = null;
+        Vector<Genre> genres = null;
+
+        try {
+            Connection con = getConnection();
+            PreparedStatement pstGenre = con.prepareStatement(selectStatement);
+            ResultSet result = pstGenre.executeQuery();
+
+            genres = new Vector<>();
+
+            while (result.next()) {
+                genre = new Genre();
+                genre.setGenreID(result.getInt("genreid"));
+                genre.setName(result.getString("genrename"));
+                genres.add(genre);
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return genres;
     }
 }
