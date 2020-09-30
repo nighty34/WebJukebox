@@ -46,14 +46,14 @@ public class Database {
                     "genreid INT NOT NULL," +
                     "PRIMARY KEY (songid)," +
                     "FOREIGN KEY (artistid) REFERENCES artist(artistid)," +
-                    "FOREIGN KEY (artistid) REFERENCES genres(genreid));";
+                    "FOREIGN KEY (artistid) REFERENCES genre(genreid));";
 
             String sqlCreateArtist = "CREATE TABLE IF NOT EXISTS artist (" +
                     "artistid INT NOT NULL AUTO_INCREMENT," +
                     "artistname VARCHAR(45) NULL," +
                     "PRIMARY KEY (artistid));";
 
-            String sqlCreateGenres = "CREATE TABLE IF NOT EXISTS genres (" +
+            String sqlCreateGenres = "CREATE TABLE IF NOT EXISTS genre (" +
                     "genreid INT NOT NULL," +
                     "genrename VARCHAR(45) NULL," +
                     "PRIMARY KEY (genreid));";
