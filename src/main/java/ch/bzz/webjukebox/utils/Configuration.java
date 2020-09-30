@@ -9,7 +9,9 @@ public class Configuration {
     private static YamlConfig config;
     private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "config.yml";;
 
-
+    /**
+     * Initializes configuration
+     */
     public static void init() {
         createIfNotExists();
 
@@ -24,6 +26,10 @@ public class Configuration {
         //TODO: Replace try catch with throws
     }
 
+
+    /**
+     * Creates config.yml if it doesn't exist
+     */
     public static void createIfNotExists() {
 
         File configFile = new File(path);
@@ -45,6 +51,13 @@ public class Configuration {
         }
     }
 
+    /**
+     * Writes standardconfig
+     * @param configFile config File
+     * @throws IOException
+     */
+
+    //TODO: Change method to copy default config instead of writing it via code.
     private static void writeStandardConfig(File configFile) throws IOException {
 
         FileWriter fileWriter = new FileWriter(configFile);
@@ -62,6 +75,10 @@ public class Configuration {
     }
 
 
+    /**
+     * Returns configuration
+     * @return config
+     */
     public static YamlConfig getConfig() {
         return config;
     }
