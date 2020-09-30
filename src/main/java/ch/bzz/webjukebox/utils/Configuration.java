@@ -11,13 +11,17 @@ public class Configuration {
 
 
     public static void init() {
-
         createIfNotExists();
 
-        InputStream resource = new Configuration().getClass()
-                .getClassLoader()
-                .getResourceAsStream(path);
-        config = YamlConfig.load(resource);
+        try{
+        InputStream resource = new FileInputStream(path);
+            System.out.println(resource.available());
+            config = YamlConfig.load(resource);
+        }catch (IOException ex){
+            ex.printStackTrace();
+            System.out.println("Config konnte nicht gelesen werden.");
+        }
+        //TODO: Replace try catch with throws
     }
 
     public static void createIfNotExists() {
@@ -55,6 +59,8 @@ public class Configuration {
                 "  poolsize: 100";
 
         fileWriter.write(contents);
+        System.out.println("WRITE");
+        fileWriter.close();
     }
 
 

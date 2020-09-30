@@ -17,7 +17,9 @@ public class Database {
 
     private static void openConection(){
         readConfig();
+
         hikari = new HikariDataSource();
+
 
         hikari.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
         hikari.addDataSourceProperty("serverName", host);
@@ -26,6 +28,7 @@ public class Database {
         hikari.addDataSourceProperty("user", username);
         hikari.addDataSourceProperty("password", password);
         hikari.setMaximumPoolSize(poolSize);
+
 
     }
 
@@ -83,12 +86,13 @@ public class Database {
     }
 
     private static void readConfig(){
+        System.out.println(Configuration.getConfig().getString("MySQL.host"));
         host = Configuration.getConfig().getString("MySQL.host");
-        port = Configuration.getConfig().getInt("MySQL.port");
         database = Configuration.getConfig().getString("MySQL.database");
         username = Configuration.getConfig().getString("MySQL.username");
         password = Configuration.getConfig().getString("MySQL.password");
         poolSize = Configuration.getConfig().getInt("MySQL.poolsize");
+        port = Configuration.getConfig().getInt("MySQL.port");
     }
 
     // Retrieving methods from here onwards
