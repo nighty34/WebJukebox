@@ -86,7 +86,6 @@ public class Database {
     }
 
     private static void readConfig(){
-        System.out.println(Configuration.getConfig().getString("MySQL.host"));
         host = Configuration.getConfig().getString("MySQL.host");
         database = Configuration.getConfig().getString("MySQL.database");
         username = Configuration.getConfig().getString("MySQL.username");
