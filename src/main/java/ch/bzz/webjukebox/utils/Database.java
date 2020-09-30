@@ -91,7 +91,9 @@ public class Database {
         poolSize = Configuration.getConfig().getInt("MySQL.poolsize");
     }
 
-    public static Vector<Song> retrieveSongsFromDB() {
+    // Retrieving methods from here onwards
+
+    public static Vector<Song> retrieveAllSongs() {
 
         String selectStatement = "select * from music";
 

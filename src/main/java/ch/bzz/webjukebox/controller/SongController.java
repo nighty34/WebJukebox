@@ -13,16 +13,15 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 @RestController
-public class ArtistController {
-    @GetMapping("/allsongs")
-    public Vector<Artist> getAllSongs() {
+public class SongController {
 
-        // Implement logic
+    @GetMapping("/rest/allsongs")
+    public Vector<Song> getAllSongs() {
 
-        return null;
+        return Database.retrieveAllSongs();
     }
 
-    @PostMapping("/plusonestream")
+    @PostMapping("/rest/plusonestream")
     public void plusOneStream(@RequestParam(value = "songID") int songID) {
         try{
             Connection connection = Database.getConnection();
