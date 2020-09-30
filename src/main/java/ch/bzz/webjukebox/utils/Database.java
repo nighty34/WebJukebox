@@ -132,7 +132,7 @@ public class Database {
                 song.setGenre(genres.get(results.getInt("genreid") - 1));
             }
 
-            if (pstMusic != null) {
+            /*if (pstMusic != null) {
                 try {
                     pstMusic.close();
                 } catch (SQLException e) {
@@ -148,7 +148,9 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
+            }*/
+
+            CloseStatement(pstMusic, con);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -182,7 +184,7 @@ public class Database {
 
             }
 
-            if (pstMusic != null) {
+            /*if (pstMusic != null) {
                 try {
                     pstMusic.close();
                 } catch (SQLException e) {
@@ -198,7 +200,8 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
+            }*/
+            CloseStatement(pstMusic, con);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -229,7 +232,7 @@ public class Database {
                 artists.add(artist);
             }
 
-            if (pstArtist != null) {
+            /*if (pstArtist != null) {
                 try {
                     pstArtist.close();
                 } catch (SQLException e) {
@@ -245,7 +248,9 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
+            }*/
+
+            CloseStatement(pstArtist, con);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -271,7 +276,7 @@ public class Database {
                 artist.setName(result.getString("artistname"));
             }
 
-            if (pstArtist != null) {
+            /*if (pstArtist != null) {
                 try {
                     pstArtist.close();
                 } catch (SQLException e) {
@@ -287,7 +292,8 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
+            }*/
+            CloseStatement(pstArtist, con);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -313,7 +319,7 @@ public class Database {
                 genre.setName(result.getString("genrename"));
             }
 
-            if (pstGenre != null) {
+            /*if (pstGenre != null) {
                 try {
                     pstGenre.close();
                 } catch (SQLException e) {
@@ -329,14 +335,13 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
+            }*/
+            CloseStatement(pstGenre, con);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
         }
-
-
 
         return genre;
     }
@@ -361,7 +366,7 @@ public class Database {
                 genres.add(genre);
             }
 
-            if (pstGenre != null) {
+            /*if (pstGenre != null) {
                 try {
                     pstGenre.close();
                 } catch (SQLException e) {
@@ -377,15 +382,35 @@ public class Database {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
                 }
-            }
-
-
-
+            }*/
+            CloseStatement(pstGenre, con);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
         }
 
         return genres;
+    }
+
+
+
+    public static void CloseStatement(PreparedStatement statement, Connection conn){
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+        }
+
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
