@@ -14,6 +14,10 @@ public class Song {
 
     }
 
+    public void setSongID(int songID) {
+        this.songID = songID;
+    }
+
     public int getSongID() {
         return songID;
     }

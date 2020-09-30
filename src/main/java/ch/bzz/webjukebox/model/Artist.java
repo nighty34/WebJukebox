@@ -8,6 +8,10 @@ public class Artist {
 
     }
 
+    public void setArtistID(int artistID) {
+        this.artistID = artistID;
+    }
+
     public int getArtistID() {
         return artistID;
     }
