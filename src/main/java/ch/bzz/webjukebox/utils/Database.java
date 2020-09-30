@@ -13,6 +13,9 @@ public class Database {
 
 
     private static void openConection(){
+        readConfig();
+        hikari = new HikariDataSource();
+
         hikari.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
         hikari.addDataSourceProperty("serverName", host);
         hikari.addDataSourceProperty("port", port);
@@ -20,11 +23,12 @@ public class Database {
         hikari.addDataSourceProperty("user", username);
         hikari.addDataSourceProperty("password", password);
         hikari.setMaximumPoolSize(poolSize);
+
     }
 
     public static void init(){
         openConection();
-        //TODO: Set host, etc.
+
         try {
             String sqlCreateMusic = "CREATE TABLE IF NOT EXISTS music (" +
                     "titleid INT NOT NULL AUTO_INCREMENT," +
@@ -34,8 +38,8 @@ public class Database {
                     "streams INT NOT NULL," +
                     "artistid INT NOT NULL," +
                     "genreid INT NOT NULL," +
-                    "PRIMARY KEY (`titleid`),";
-            //TODO: FOREIGN KEY
+                    "PRIMARY KEY (titleid),";
+            //TODO: FOREIGN KEYS
 
             String sqlCreateArtist = "CREATE TABLE IF NOT EXISTS artist (" +
                     "artistid INT NOT NULL AUTO_INCREMENT," +
@@ -67,10 +71,20 @@ public class Database {
     }
 
     public static void reloadDB(){
+        readConfig();
         hikari.close();
     }
 
     public static Connection getConnection() throws SQLException{
         return hikari.getConnection();
+    }
+
+    private static void readConfig(){
+        host = Configuration.getConfig().getString("MySQL.host");
+        port = Configuration.getConfig().getInt("MySQL.port");
+        database = Configuration.getConfig().getString("MySQL.database");
+        username = Configuration.getConfig().getString("MySQL.username");
+        password = Configuration.getConfig().getString("MySQL.password");
+        poolSize = Configuration.getConfig().getInt("MySQL.poolsize");
     }
 }
