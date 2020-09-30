@@ -1,5 +1,6 @@
 package ch.bzz.webjukebox.controller;
 
+import ch.bzz.webjukebox.utils.Database;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,16 +10,15 @@ import ch.bzz.webjukebox.model.*;
 import java.util.Vector;
 
 @RestController
-public class ArtistController {
-    @GetMapping("/allsongs")
-    public Vector<Artist> getAllSongs() {
+public class SongController {
 
-        // Implement logic
+    @GetMapping("/rest/allsongs")
+    public Vector<Song> getAllSongs() {
 
-        return null;
+        return Database.retrieveAllSongs();
     }
 
-    @PostMapping("/plusonestream")
+    @PostMapping("/rest/plusonestream")
     public void plusOneStream(@RequestParam(value = "songID") int songID) {
 
         // implement logic
