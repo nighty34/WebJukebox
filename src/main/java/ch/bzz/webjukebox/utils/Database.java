@@ -44,18 +44,19 @@ public class Database {
                     "streams INT NOT NULL," +
                     "artistid INT NOT NULL," +
                     "genreid INT NOT NULL," +
-                    "PRIMARY KEY (titleid),";
-            //TODO: FOREIGN KEYS
+                    "PRIMARY KEY (songid)," +
+                    "FOREIGN KEY (artistid) REFERENCES artist(artistid)," +
+                    "FOREIGN KEY (artistid) REFERENCES genres(genreid));";
 
             String sqlCreateArtist = "CREATE TABLE IF NOT EXISTS artist (" +
                     "artistid INT NOT NULL AUTO_INCREMENT," +
                     "artistname VARCHAR(45) NULL," +
-                    "RIMARY KEY (artistid))";
+                    "PRIMARY KEY (artistid));";
 
             String sqlCreateGenres = "CREATE TABLE IF NOT EXISTS genres (" +
                     "genreid INT NOT NULL," +
                     "genrename VARCHAR(45) NULL," +
-                    "PRIMARY KEY (genreid))";
+                    "PRIMARY KEY (genreid));";
 
 
             Connection con = getConnection();
@@ -63,11 +64,13 @@ public class Database {
             PreparedStatement pstArtist = createPreparedStatement(con, sqlCreateArtist);
             PreparedStatement pstGenres = createPreparedStatement(con, sqlCreateGenres);
 
-            pstMusic.execute();
+
             pstArtist.execute();
             pstGenres.execute();
+            pstMusic.execute();
+
         }catch (SQLException e){
-            //TODO: ERROR
+            e.printStackTrace();
         }
     }
 
