@@ -22,7 +22,6 @@ public class Database {
 
         hikari = new HikariDataSource();
 
-
         hikari.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
         hikari.addDataSourceProperty("serverName", host);
         hikari.addDataSourceProperty("port", port);
@@ -119,8 +118,6 @@ public class Database {
         port = Configuration.getConfig().getInt("MySQL.port");
     }
 
-
-
     // Retrieving methods from here onwards
 
     public static Vector<Song> retrieveAllSongs() {
@@ -156,24 +153,6 @@ public class Database {
                 song.setGenre(genres.get(results.getInt("genreid") - 1));
             }
 
-            /*if (pstMusic != null) {
-                try {
-                    pstMusic.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
-
             CloseStatement(pstMusic, con);
 
         } catch (SQLException throwables) {
@@ -208,23 +187,6 @@ public class Database {
 
             }
 
-            /*if (pstMusic != null) {
-                try {
-                    pstMusic.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
             CloseStatement(pstMusic, con);
 
         } catch (SQLException throwables) {
@@ -256,24 +218,6 @@ public class Database {
                 artists.add(artist);
             }
 
-            /*if (pstArtist != null) {
-                try {
-                    pstArtist.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
-
             CloseStatement(pstArtist, con);
 
         } catch (SQLException throwables) {
@@ -300,23 +244,6 @@ public class Database {
                 artist.setName(result.getString("artistname"));
             }
 
-            /*if (pstArtist != null) {
-                try {
-                    pstArtist.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
             CloseStatement(pstArtist, con);
 
         } catch (SQLException throwables) {
@@ -343,23 +270,6 @@ public class Database {
                 genre.setName(result.getString("genrename"));
             }
 
-            /*if (pstGenre != null) {
-                try {
-                    pstGenre.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
             CloseStatement(pstGenre, con);
 
         } catch (SQLException throwables) {
@@ -390,23 +300,6 @@ public class Database {
                 genres.add(genre);
             }
 
-            /*if (pstGenre != null) {
-                try {
-                    pstGenre.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-            }*/
             CloseStatement(pstGenre, con);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
