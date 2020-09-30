@@ -34,7 +34,7 @@ public class Database {
 
         try {
             String sqlCreateMusic = "CREATE TABLE IF NOT EXISTS music (" +
-                    "titleid INT NOT NULL AUTO_INCREMENT," +
+                    "songid INT NOT NULL AUTO_INCREMENT," +
                     "title VARCHAR(45) NULL," +
                     "filepath VARCHAR(45) NOT NULL," +
                     "coverpath VARCHAR(45) NULL," +

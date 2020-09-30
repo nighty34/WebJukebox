@@ -3,13 +3,11 @@ package ch.bzz.webjukebox.utils;
 import com.github.jsixface.YamlConfig;
 
 import java.io.*;
-import java.net.URLDecoder;
-import java.nio.file.Path;
 
 public class Configuration {
 
     private static YamlConfig config;
-    private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "config.yml";;
+    private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "config.yml";;
 
 
     public static void init() {
@@ -24,6 +22,7 @@ public class Configuration {
 
     public static void createIfNotExists() {
 
+        System.out.println(path);
         File configFile = new File(path);
 
         if (configFile.exists()) {
