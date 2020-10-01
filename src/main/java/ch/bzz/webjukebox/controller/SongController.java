@@ -11,6 +11,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 @RestController
@@ -22,12 +23,18 @@ public class SongController {
         try {
             Vector<String> files = getResourcesFiles("static/music");
             if(files.size()>0) {
+                Vector<Song> removeSongs = new Vector<>();
+
 
                 for (Song song : songs) {
                     if (!(files.contains(song.getFilepath()))) {
                         System.out.println("Der Song: " + song.getName() + " existiert nicht");
-                        songs.removeElement(song);
+                        removeSongs.add(song);
                     }
+                }
+
+                for (Song song : removeSongs) {
+                    songs.remove(song);
                 }
             }else{
                 System.out.println("Es wurden keine Files erkannt.");
