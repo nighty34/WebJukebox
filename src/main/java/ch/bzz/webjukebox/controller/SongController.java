@@ -20,14 +20,17 @@ public class SongController {
     public Vector<Song> getAllSongs() {
         Vector<Song> songs = Database.retrieveAllSongs();
         try {
-            System.out.println(Thread.currentThread().getContextClassLoader().getResource("static").getPath());
             Vector<String> files = getResourcesFiles("static/music");
+            if(files.size()>0) {
 
-            for (Song song:songs) {
-                if(!(files.contains(song.getFilepath()))){
-                    System.out.println("Der Song: " + song.getName() + " existiert nicht");
-                    songs.removeElement(song);
+                for (Song song : songs) {
+                    if (!(files.contains(song.getFilepath()))) {
+                        System.out.println("Der Song: " + song.getName() + " existiert nicht");
+                        songs.removeElement(song);
+                    }
                 }
+            }else{
+                System.out.println("Es wurden keine Files erkannt.");
             }
         }catch (IOException ex){
             ex.printStackTrace();
@@ -97,7 +100,6 @@ public class SongController {
             String resource;
             while((resource = reader.readLine())!=null){
                 filenames.add(resource);
-                System.out.println(resource);
             }
         }catch (Exception ex){
             ex.printStackTrace();
