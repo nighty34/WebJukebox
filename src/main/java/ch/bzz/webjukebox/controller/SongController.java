@@ -55,7 +55,7 @@ public class SongController {
         return artists;
     }
 
-    @GetMapping("/rest/allGenres")
+    @GetMapping("/rest/allgenres")
     public Vector<Genre> getAllGenres() {
         Vector<Genre> genres = Database.retrieveAllGenres();
 
