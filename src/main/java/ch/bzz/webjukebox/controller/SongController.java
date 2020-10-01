@@ -39,6 +39,20 @@ public class SongController {
         return songs;
     }
 
+    @GetMapping("/rest/allartists")
+    public Vector<Artist> getAllArtists() {
+        Vector<Artist> artists = Database.retrieveAllArtists();
+
+        return artists;
+    }
+
+    @GetMapping("/rest/allGenres")
+    public Vector<Genre> getAllGenres() {
+        Vector<Genre> genres = Database.retrieveAllGenres();
+
+        return genres;
+    }
+
     @PostMapping("/rest/plusonestream")
     public void plusOneStream(@RequestParam(value = "songID") int songID) {
         try {
