@@ -3,6 +3,7 @@ package ch.bzz.webjukebox.utils;
 import ch.bzz.webjukebox.model.*;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -340,7 +341,9 @@ public class Database {
         String insertStatement = "INSERT INTO genre (genrename)" +
                 "VALUES (?)";
 
-        try {
+        simpleInsert(insertStatement, genre.getName());
+
+        /*try {
             Connection conn = getConnection();
             PreparedStatement pstGenre = conn.prepareStatement(insertStatement);
 
@@ -353,7 +356,7 @@ public class Database {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
-        }
+        }*/
     }
 
     public static void addArtist(Artist artist) {
@@ -361,9 +364,10 @@ public class Database {
         String insertStatement = "INSERT INTO artist (artistname)" +
                 "VALUES (?)";
 
-        try {
+        simpleInsert(insertStatement, artist.getName());
+        /*try {
             Connection conn = getConnection();
-            PreparedStatement pstArtist = conn.prepareStatement(insertStatement);
+            PreparedStatement pstArtist = conn.prepareStatement(isnsertStatement);
 
             pstArtist.setString(1, artist.getName());
 
@@ -373,6 +377,21 @@ public class Database {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
+        }*/
+    }
+
+
+    public static void simpleInsert(String insertStatement, String argument){
+        try{
+            Connection conn = getConnection();
+            PreparedStatement pst = conn.prepareStatement(insertStatement);
+            pst.setString(1, argument);
+
+            pst.execute();
+
+            closeStatement(pst, conn);
+        }catch (SQLException ex){
+            ex.printStackTrace();
         }
     }
 
