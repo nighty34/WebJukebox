@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='de'>
 <head>
-    <meta charset="UTF-8">
-    <title>INDEX</title>
+    <meta charset='UTF-8'>
+    <meta name='author' content='Marcel Suter'/>
+    <meta name='copyright' content='Marcel Suter - BZZ'/>
+    <meta name='project' content='BookDB'/>
+    <meta name='description' content='RefProject projects'/>
+    <title>Referenzprojekte</title>
+    <link rel='stylesheet' href='./css/bootstrap.min.css'/>
 </head>
 <body>
-    <h1>WEBBASED STUFF COMES HERE</h1>
+<div class='container'>
+    <h3>Testfall</h3>
+    <form id='testcase'>
+        <div class='form-group row'>
+            <label class='col-sm-2'for='address'>Applikation</label>
+            <span id='address' name='address'></span>
+        </div>
+        <div class='form-group row'>
+            <label class='col-sm-2'for='service'>Service</label>
+            <input type='text' class='form-control col-sm-8' name='service' id='service' />
+        </div>
+        <div class='form-group row'>
+            <label class='col-sm-2' for='type'>Request-Art</label>
+            <select class='form-control col-sm-8' id='type' name='type' required>
+                <option value='GET'>GET</option>
+                <option value='POST'>POST</option>
+                <option value='PUT'>PUT</option>
+                <option value='DELETE'>DELETE</option>
+            </select>
+        </div>
+        <div class='form-group row'>
+            <label class='col-sm-2'for='queryParam'>Query-Parameter</label>
+            <textarea class='form-control col-sm-8' id='queryParam' name='queryParam'></textarea>
+        </div>
+        <div class='form-group row'>
+            <label class='col-sm-2'for='formParam'>Formular-Parameter</label>
+            <textarea class='form-control col-sm-8' id='formParam' name='queryParam'></textarea>
+        </div>
+        <div class='form-group row'>
+            <button id='sendCase' type='submit'>Senden</button>
+        </div>
+    </form>
+
+    <h3>Resultat</h3>
+    <div class='form-group row'>
+        <label class='col-sm-2' for='httpStatus'>HTTP-Status</label>
+        <span class='col-sm-2' id='httpStatus' name='httpStatus'></span>
+    </div>
+    <div class='form-group row'>
+        <label class='col-sm-2' for='outputData'>Response</label>
+        <div class='col-sm-8' id='outputData'></div>
+    </div>
+</div>
+<script src='./js/jquery-3.4.1.min.js'></script>
+<script src='./js/bootstrap.min.js'></script>
+<script src='./js/testing.js'></script>
 </body>
 </html>
