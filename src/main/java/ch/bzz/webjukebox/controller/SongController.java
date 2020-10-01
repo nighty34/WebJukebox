@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ch.bzz.webjukebox.model.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
 import java.sql.Connection;

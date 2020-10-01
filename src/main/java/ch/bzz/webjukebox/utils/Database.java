@@ -58,7 +58,7 @@ public class Database {
                     "PRIMARY KEY (artistid));";
 
             String sqlCreateGenres = "CREATE TABLE IF NOT EXISTS genre (" +
-                    "genreid INT NOT NULL," +
+                    "genreid INT NOT NULL AUTO_INCREMENT," +
                     "genrename VARCHAR(45) NULL," +
                     "PRIMARY KEY (genreid));";
 
