@@ -57,38 +57,11 @@ public class SongController {
     @PostMapping("/rest/plusonestream")
     public void plusOneStream(@RequestParam(value = "songID") int songID) {
         try {
-            Connection connection = Database.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE music SET streams = streams + 1 WHERE songid = ?;");
-            preparedStatement.setInt(1, songID);
-
-
-            new Thread(() -> {
-                try {
-                    preparedStatement.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (preparedStatement != null) {
-                        try {
-                            preparedStatement.close();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    if (connection != null) {
-                        try {
-                            connection.close();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).run();
-        } catch (SQLException ex){
+        Database.plusOneStream(songID);
+        } catch (SQLException ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error when upping the stream count of song (ID: " + songID + ")"
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error when upping the stream count of song (ID: " + songID + ")", ex
             );
         }
     }

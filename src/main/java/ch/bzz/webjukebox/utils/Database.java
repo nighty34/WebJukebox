@@ -2,6 +2,8 @@ package ch.bzz.webjukebox.utils;
 
 import ch.bzz.webjukebox.model.*;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -399,6 +401,40 @@ public class Database {
         }*/
     }
 
+
+    public static void plusOneStream(int songID) throws SQLException {
+
+
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE music SET streams = streams + 1 WHERE songid = ?;");
+        preparedStatement.setInt(1, songID);
+
+
+        new Thread(() -> {
+            try {
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (preparedStatement != null) {
+                    try {
+                        preparedStatement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).run();
+
+    }
 
     public static void simpleInsert(String insertStatement, String argument) throws SQLException{
 
