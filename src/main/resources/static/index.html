@@ -693,7 +693,7 @@
         var songsiter = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 
-        for (var i = 0; i < 20; i++){
+        for (var i = 0; i < 20; i++) {
             //songs[javaobj[i].genre.genreID][songsiter[i]] = javaobj[i];
             var genreID = javaobj[i].genre.genreID;
             document.getElementById("txt" + genreID + songsiter[genreID]).innerHTML = javaobj[i].name;
@@ -703,7 +703,7 @@
             document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function (i) {
                 document.getElementById("imgCover").src = "music/" + javaobj[i.toElement.className].coverpath;
                 document.getElementById("songTitle").innerText = javaobj[i.toElement.className].name;
-                audio1 = new Audio("music/" + avaobj[i.toElement.className].filepath);
+                audio1 = new Audio("music/" + javaobj[i.toElement.className].filepath);
                 var url = "/rest/plusonestream";
                 xmlHttp.open("POST", url, true);
                 xmlHttp.send("songID=" + javaobj[i].songID);
