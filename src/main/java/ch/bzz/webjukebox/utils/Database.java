@@ -152,6 +152,8 @@ public class Database {
                 song.setStreams(results.getInt("streams"));
 
                 song.setGenre(genres.get(results.getInt("genreid") - 1));
+
+                songs.add(song);
             }
 
             closeStatement(pstMusic, conn);
