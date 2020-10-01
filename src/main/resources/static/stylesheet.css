@@ -1,0 +1,53 @@
+.logo{
+    height: 39px;
+    width: 39px;
+    float: left;
+}
+.tbl{
+    width: 42em;
+}
+.tabbeleBox{
+    height: 40px;
+    width: 193px;
+    min-height: 60px;
+}
+
+.th{
+    height: 39px;
+    width: 39px;
+}
+.tableVisable{
+    border-style: ridge;
+}
+.tableInviable{
+    border-color: white;
+    border-style: solid;
+}
+.tableNotused{
+    display: none;
+}
+.section{
+    border-style: groove;
+}
+.tblGenere{
+border-style: solid;
+    background-color: deepskyblue;
+}
+#player{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+#player tabel{
+    border-collapse: separate;
+    border-spacing: 50px 0;
+}
+
+#player tr{
+    padding: 10px 10px;
+}
+#imgPlayer{
+    margin-right: 10px;
+    margin-left: 20px;
+}
