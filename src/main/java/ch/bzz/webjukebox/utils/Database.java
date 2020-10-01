@@ -17,7 +17,7 @@ public class Database {
     /**
      * Opens connection to db
      */
-    private static void openConection(){
+    private static void openConnection() {
         readConfig();
 
         hikari = new HikariDataSource();
@@ -36,7 +36,7 @@ public class Database {
      * Initilizes database
      */
     public static void init(){
-        openConection();
+        openConnection();
 
         try {
             String sqlCreateMusic = "CREATE TABLE IF NOT EXISTS music (" +
@@ -62,10 +62,10 @@ public class Database {
                     "PRIMARY KEY (genreid));";
 
 
-            Connection con = getConnection();
-            PreparedStatement pstMusic = createPreparedStatement(con, sqlCreateMusic);
-            PreparedStatement pstArtist = createPreparedStatement(con, sqlCreateArtist);
-            PreparedStatement pstGenres = createPreparedStatement(con, sqlCreateGenres);
+            Connection conn = getConnection();
+            PreparedStatement pstMusic = createPreparedStatement(conn, sqlCreateMusic);
+            PreparedStatement pstArtist = createPreparedStatement(conn, sqlCreateArtist);
+            PreparedStatement pstGenres = createPreparedStatement(conn, sqlCreateGenres);
 
 
             pstArtist.execute();
@@ -79,13 +79,13 @@ public class Database {
 
     /**
      * Creates a preparedstatement
-     * @param con db connection
+     * @param conn db connection
      * @param sqlString sql command
      * @return preparedstatement
      * @throws SQLException
      */
-    public static PreparedStatement createPreparedStatement(Connection con, String sqlString) throws SQLException {
-        return con.prepareStatement(sqlString);
+    public static PreparedStatement createPreparedStatement(Connection conn, String sqlString) throws SQLException {
+        return conn.prepareStatement(sqlString);
     }
 
     /**
@@ -122,15 +122,15 @@ public class Database {
 
     public static Vector<Song> retrieveAllSongs() {
 
-        String selectStatement = "select * from music";
+        String selectStatement = "SELECT * FROM music";
 
         Vector<Song> songs = null;
         Vector<Artist> artists = null;
         Vector<Genre> genres = null;
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstMusic = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstMusic = conn.prepareStatement(selectStatement);
             ResultSet results = pstMusic.executeQuery();
 
             songs = new Vector<>();
@@ -153,7 +153,7 @@ public class Database {
                 song.setGenre(genres.get(results.getInt("genreid") - 1));
             }
 
-            CloseStatement(pstMusic, con);
+            closeStatement(pstMusic, conn);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -165,14 +165,14 @@ public class Database {
     }
 
     public static Song retrieveSong(int songID) {
-        String selectStatement = "select * from music where songid=" + songID;
+        String selectStatement = "SELECT * FROM music WHERE songid=" + songID;
 
         Song song = null;
 
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstMusic = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstMusic = conn.prepareStatement(selectStatement);
             ResultSet result = pstMusic.executeQuery();
 
             while (result.next()) {
@@ -187,7 +187,7 @@ public class Database {
 
             }
 
-            CloseStatement(pstMusic, con);
+            closeStatement(pstMusic, conn);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -199,13 +199,13 @@ public class Database {
 
     public static Vector<Artist> retrieveAllArtists() {
 
-        String selectStatement = "select * from artist";
+        String selectStatement = "SELECT * FROM artist";
 
         Vector<Artist> artists = null;
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstArtist = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstArtist = conn.prepareStatement(selectStatement);
             ResultSet results = pstArtist.executeQuery();
 
             artists = new Vector<>();
@@ -218,7 +218,7 @@ public class Database {
                 artists.add(artist);
             }
 
-            CloseStatement(pstArtist, con);
+            closeStatement(pstArtist, conn);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -229,13 +229,13 @@ public class Database {
     }
 
     public static Artist retrieveArtist(int artistID) {
-        String selectStatement = "select * from artist where artistid=" + artistID;
+        String selectStatement = "SELECT * FROM artist WHERE artistid=" + artistID;
 
         Artist artist = null;
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstArtist = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstArtist = conn.prepareStatement(selectStatement);
             ResultSet result = pstArtist.executeQuery();
 
             while (result.next()) {
@@ -244,7 +244,7 @@ public class Database {
                 artist.setName(result.getString("artistname"));
             }
 
-            CloseStatement(pstArtist, con);
+            closeStatement(pstArtist, conn);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -255,13 +255,13 @@ public class Database {
     }
 
     public static Genre retrieveGenre(int genreID) {
-        String selectStatement = "select * from genre where genreid=" + genreID;
+        String selectStatement = "SELECT * FROM genre WHERE genreid=" + genreID;
 
         Genre genre = null;
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstGenre = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstGenre = conn.prepareStatement(selectStatement);
             ResultSet result = pstGenre.executeQuery();
 
             while (result.next()) {
@@ -270,7 +270,7 @@ public class Database {
                 genre.setName(result.getString("genrename"));
             }
 
-            CloseStatement(pstGenre, con);
+            closeStatement(pstGenre, conn);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -281,14 +281,14 @@ public class Database {
     }
 
     public static Vector<Genre> retrieveAllGenres() {
-        String selectStatement = "select * from genre";
+        String selectStatement = "SELECT * FROM genre";
 
         Genre genre = null;
         Vector<Genre> genres = null;
 
         try {
-            Connection con = getConnection();
-            PreparedStatement pstGenre = con.prepareStatement(selectStatement);
+            Connection conn = getConnection();
+            PreparedStatement pstGenre = conn.prepareStatement(selectStatement);
             ResultSet result = pstGenre.executeQuery();
 
             genres = new Vector<>();
@@ -300,7 +300,7 @@ public class Database {
                 genres.add(genre);
             }
 
-            CloseStatement(pstGenre, con);
+            closeStatement(pstGenre, conn);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
@@ -309,9 +309,76 @@ public class Database {
         return genres;
     }
 
+    public static void addSong(Song song) {
+
+        String insertStatement = "INSERT INTO music (title, filepath, coverpath, streams, artistid, genreid)" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstMusic = conn.prepareStatement(insertStatement);
+
+            pstMusic.setString(1, song.getName());
+            pstMusic.setString(2, song.getFilepath());
+            pstMusic.setString(3, song.getCoverpath());
+            pstMusic.setInt(4, song.getStreams());
+            pstMusic.setInt(5, song.getArtist().getArtistID());
+            pstMusic.setInt(6, song.getGenre().getGenreID());
+
+            pstMusic.executeUpdate();
+
+            closeStatement(pstMusic, conn);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.out.println(throwables.getMessage());
+        }
+
+    }
+
+    public static void addGenre(Genre genre) {
+
+        String insertStatement = "INSERT INTO genre (genrename)" +
+                "VALUES (?)";
+
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstGenre = conn.prepareStatement(insertStatement);
+
+            pstGenre.setString(1, genre.getName());
+
+            pstGenre.executeUpdate();
+
+            closeStatement(pstGenre, conn);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.out.println(throwables.getMessage());
+        }
+    }
+
+    public static void addArtist(Artist artist) {
+
+        String insertStatement = "INSERT INTO artist (artistname)" +
+                "VALUES (?)";
+
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstArtist = conn.prepareStatement(insertStatement);
+
+            pstArtist.setString(1, artist.getName());
+
+            pstArtist.executeUpdate();
+
+            closeStatement(pstArtist, conn);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.out.println(throwables.getMessage());
+        }
+    }
 
 
-    public static void CloseStatement(PreparedStatement statement, Connection conn){
+
+    public static void closeStatement(PreparedStatement statement, Connection conn){
         if (statement != null) {
             try {
                 statement.close();
