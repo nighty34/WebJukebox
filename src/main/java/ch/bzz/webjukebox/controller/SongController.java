@@ -2,10 +2,7 @@ package ch.bzz.webjukebox.controller;
 
 import ch.bzz.webjukebox.utils.Database;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ch.bzz.webjukebox.model.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -88,7 +85,7 @@ public class SongController {
                     }
                 }
             }).run();
-        }catch (SQLException ex){
+        } catch (SQLException ex){
             ex.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "Error when upping the stream count of song (ID: " + songID + ")"
@@ -127,23 +124,36 @@ public class SongController {
         song.setStreams(0);
         try {
             Artist artist = Database.retrieveArtist(artistID);
-            song.setArtist(artist);
+            if (artist != null) {
+                song.setArtist(artist);
+            } else {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "The requested artist was not found in the database."
+                );
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "The requested Artist wasn't found."
-            ); // This could also mean "Internal Server Error", but we can't really differentiate here.
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error while retrieving artist information", e
+            );
         }
 
         try {
             Genre genre = Database.retrieveGenre(genreID);
-            song.setGenre(genre);
+            if (genre != null) {
+                song.setGenre(genre);
+            } else {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "The requested Genre was not found."
+                );
+            }
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "The requested Genre was not found."
+                    HttpStatus.NOT_FOUND, "Error while retrieving genre.", e
             );
         }
 
@@ -153,7 +163,7 @@ public class SongController {
             e.printStackTrace();
             System.out.println(e.getMessage());
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Song could not be saved"
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Song could not be saved", e
             );
         }
     }
