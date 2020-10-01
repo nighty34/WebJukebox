@@ -13,7 +13,6 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Vector;
 
 @RestController
@@ -22,30 +21,24 @@ public class SongController {
     @GetMapping("/rest/allsongs")
     public Vector<Song> getAllSongs() {
         Vector<Song> songs = Database.retrieveAllSongs();
-        try {
-            Vector<String> files = getResourcesFiles("static/music");
-            if(files.size()>0) {
-                Vector<Song> removeSongs = new Vector<>();
 
+        Vector<String> files = getResourcesFiles("static/music");
+        if(files.size()>0) {
+            Vector<Song> removeSongs = new Vector<>();
 
-                for (Song song : songs) {
-                    if (!(files.contains(song.getFilepath()))) {
-                        System.out.println("Der Song: " + song.getName() + " existiert nicht");
-                        removeSongs.add(song);
-                    }
+            for (Song song : songs) {
+                if (!(files.contains(song.getFilepath()))) {
+                    System.out.println("Der Song: " + song.getName() + " existiert nicht");
+                    removeSongs.add(song);
                 }
-
-                for (Song song : removeSongs) {
-                    songs.remove(song);
-                }
-            }else{
-                System.out.println("Es wurden keine Files erkannt.");
             }
-        }catch (IOException ex){
-            ex.printStackTrace();
+
+            for (Song song : removeSongs) {
+                songs.remove(song);
+            }
+        }else{
+            System.out.println("Es wurden keine Files erkannt.");
         }
-
-
 
         return songs;
     }
@@ -103,7 +96,7 @@ public class SongController {
         }
     }
 
-    private Vector<String> getResourcesFiles(String path) throws IOException {
+    private Vector<String> getResourcesFiles(String path){
         Vector<String> filenames = new Vector<>();
 
         try {
@@ -116,10 +109,6 @@ public class SongController {
         }catch (Exception ex){
             ex.printStackTrace();
         }
-
-
-
-
 
         return filenames;
     }
