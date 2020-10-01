@@ -127,10 +127,12 @@ public class Database {
         Vector<Song> songs = null;
         Vector<Artist> artists = null;
         Vector<Genre> genres = null;
+        PreparedStatement pstMusic = null;
+        Connection conn = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstMusic = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstMusic = conn.prepareStatement(selectStatement);
             ResultSet results = pstMusic.executeQuery();
 
             songs = new Vector<>();
@@ -155,11 +157,13 @@ public class Database {
                 songs.add(song);
             }
 
-            closeStatement(pstMusic, conn);
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             throwables.getMessage();
+        } finally {
+            closeStatement(pstMusic, conn);
         }
 
         return songs;
@@ -170,11 +174,12 @@ public class Database {
         String selectStatement = "SELECT * FROM music WHERE songid=" + songID;
 
         Song song = null;
-
+        PreparedStatement pstMusic = null;
+        Connection conn = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstMusic = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstMusic = conn.prepareStatement(selectStatement);
             ResultSet result = pstMusic.executeQuery();
 
             while (result.next()) {
@@ -189,11 +194,11 @@ public class Database {
 
             }
 
-            closeStatement(pstMusic, conn);
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
+        } finally {
+            closeStatement(pstMusic, conn);
         }
 
         return song;
@@ -204,10 +209,12 @@ public class Database {
         String selectStatement = "SELECT * FROM artist";
 
         Vector<Artist> artists = null;
+        Connection conn = null;
+        PreparedStatement pstArtist = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstArtist = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstArtist = conn.prepareStatement(selectStatement);
             ResultSet results = pstArtist.executeQuery();
 
             artists = new Vector<>();
@@ -220,24 +227,26 @@ public class Database {
                 artists.add(artist);
             }
 
-            closeStatement(pstArtist, conn);
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
+        } finally {
+            closeStatement(pstArtist, conn);
         }
 
         return artists;
     }
 
-    public static Artist retrieveArtist(int artistID) {
+    public static Artist retrieveArtist(int artistID) throws SQLException{
         String selectStatement = "SELECT * FROM artist WHERE artistid=" + artistID;
 
         Artist artist = null;
+        Connection conn = null;
+        PreparedStatement pstArtist = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstArtist = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstArtist = conn.prepareStatement(selectStatement);
             ResultSet result = pstArtist.executeQuery();
 
             while (result.next()) {
@@ -246,24 +255,23 @@ public class Database {
                 artist.setName(result.getString("artistname"));
             }
 
+        } finally {
             closeStatement(pstArtist, conn);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables.getMessage());
         }
 
         return artist;
     }
 
-    public static Genre retrieveGenre(int genreID) {
+    public static Genre retrieveGenre(int genreID) throws SQLException {
         String selectStatement = "SELECT * FROM genre WHERE genreid=" + genreID;
 
         Genre genre = null;
+        PreparedStatement pstGenre = null;
+        Connection conn = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstGenre = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstGenre = conn.prepareStatement(selectStatement);
             ResultSet result = pstGenre.executeQuery();
 
             while (result.next()) {
@@ -271,12 +279,8 @@ public class Database {
                 genre.setGenreID(result.getInt("genreid"));
                 genre.setName(result.getString("genrename"));
             }
-
+        } finally {
             closeStatement(pstGenre, conn);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables.getMessage());
         }
 
         return genre;
@@ -287,10 +291,12 @@ public class Database {
 
         Genre genre = null;
         Vector<Genre> genres = null;
+        Connection conn = null;
+        PreparedStatement pstGenre = null;
 
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstGenre = conn.prepareStatement(selectStatement);
+            conn = getConnection();
+            pstGenre = conn.prepareStatement(selectStatement);
             ResultSet result = pstGenre.executeQuery();
 
             genres = new Vector<>();
@@ -302,23 +308,26 @@ public class Database {
                 genres.add(genre);
             }
 
-            closeStatement(pstGenre, conn);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables.getMessage());
+        } finally {
+            closeStatement(pstGenre, conn);
         }
 
         return genres;
     }
 
-    public static void addSong(Song song) {
+    public static void addSong(Song song) throws SQLException {
 
         String insertStatement = "INSERT INTO music (title, filepath, coverpath, streams, artistid, genreid)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
+        Connection conn = null;
+        PreparedStatement pstMusic = null;
         try {
-            Connection conn = getConnection();
-            PreparedStatement pstMusic = conn.prepareStatement(insertStatement);
+            conn = getConnection();
+            pstMusic = conn.prepareStatement(insertStatement);
 
             pstMusic.setString(1, song.getName());
             pstMusic.setString(2, song.getFilepath());
@@ -328,16 +337,13 @@ public class Database {
             pstMusic.setInt(6, song.getGenre().getGenreID());
 
             pstMusic.executeUpdate();
-
+        } finally {
             closeStatement(pstMusic, conn);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables.getMessage());
         }
 
     }
 
-    public static void addGenre(Genre genre) {
+    public static void addGenre(Genre genre) throws SQLException {
 
         String insertStatement = "INSERT INTO genre (genrename)" +
                 "VALUES (?)";
@@ -360,7 +366,7 @@ public class Database {
         }*/
     }
 
-    public static void addArtist(Artist artist) {
+    public static void addArtist(Artist artist) throws SQLException{
 
         String insertStatement = "INSERT INTO artist (artistname)" +
                 "VALUES (?)";
@@ -382,18 +388,21 @@ public class Database {
     }
 
 
-    public static void simpleInsert(String insertStatement, String argument){
-        try{
-            Connection conn = getConnection();
-            PreparedStatement pst = conn.prepareStatement(insertStatement);
+    public static void simpleInsert(String insertStatement, String argument) throws SQLException{
+
+        Connection conn = null;
+        PreparedStatement pst = null;
+
+        try {
+            conn = getConnection();
+            pst = conn.prepareStatement(insertStatement);
             pst.setString(1, argument);
 
             pst.execute();
-
+        } finally {
             closeStatement(pst, conn);
-        }catch (SQLException ex){
-            ex.printStackTrace();
         }
+
     }
 
 

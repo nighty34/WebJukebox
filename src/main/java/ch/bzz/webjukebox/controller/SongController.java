@@ -1,11 +1,13 @@
 package ch.bzz.webjukebox.controller;
 
 import ch.bzz.webjukebox.utils.Database;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ch.bzz.webjukebox.model.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
 import java.sql.Connection;
@@ -95,6 +97,9 @@ public class SongController {
             }).run();
         }catch (SQLException ex){
             ex.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error when upping the stream count of song (ID: " + songID + ")"
+            );
         }
     }
 
@@ -120,8 +125,8 @@ public class SongController {
     }
 
     @PostMapping("/rest/add/song")
-    public void addSong(@RequestParam(value = "songName")String songName,
-                        @RequestParam(value = "filePath")String filePath,
+    public void addSong(@RequestParam(value = "songName") String songName,
+                        @RequestParam(value = "filePath") String filePath,
                         @RequestParam(value = "coverPath") String coverPath,
                         @RequestParam(value = "artistID") int artistID,
                         @RequestParam(value = "genreID") int genreID) {
@@ -131,14 +136,37 @@ public class SongController {
         song.setFilepath(filePath);
         song.setCoverpath(coverPath);
         song.setStreams(0);
+        try {
+            Artist artist = Database.retrieveArtist(artistID);
+            song.setArtist(artist);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "The requested Artist wasn't found."
+            ); // This could also mean "Internal Server Error", but we can't really differentiate here.
+        }
 
-        Artist artist = Database.retrieveArtist(artistID);
-        song.setArtist(artist);
+        try {
+            Genre genre = Database.retrieveGenre(genreID);
+            song.setGenre(genre);
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "The requested Genre was not found."
+            );
+        }
 
-        Genre genre = Database.retrieveGenre(genreID);
-        song.setGenre(genre);
-
-        Database.addSong(song);
+        try {
+            Database.addSong(song);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Song could not be saved"
+            );
+        }
     }
 
 
@@ -146,8 +174,16 @@ public class SongController {
     public void addArtist(@RequestParam(value = "artistName") String artistName) {
         Artist artist = new Artist();
         artist.setName(artistName);
+        try {
+            Database.addArtist(artist);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
 
-        Database.addArtist(artist);
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error when trying to write to DB, artist not saved."
+            );
+        }
     }
 
     @PostMapping("/rest/add/genre")
@@ -155,7 +191,16 @@ public class SongController {
         Genre genre = new Genre();
         genre.setName(genreName);
 
-        Database.addGenre(genre);
+        try {
+            Database.addGenre(genre);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error when trying to write to DB, genre not saved."
+            );
+        }
     }
 
 }
