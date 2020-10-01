@@ -145,7 +145,7 @@ public class Database {
                 song.setArtist(artists.get(results.getInt("artistid") - 1)); // TODO write code that retrieves the corresponding artist.
                 // Either do that by first getting a vector of all artists or by only getting the required artist.
                 // --> decided to go for retrieveAllArtists in order to keep sql queries to a minimum.
-                song.setSongID(results.getInt("titleid"));
+                song.setSongID(results.getInt("songid"));
                 song.setName(results.getString("title"));
                 song.setCoverpath(results.getString("coverpath"));
                 song.setFilepath(results.getString("filepath"));
