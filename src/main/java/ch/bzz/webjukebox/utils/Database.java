@@ -33,7 +33,7 @@ public class Database {
 
 
     /**
-     * Initilizes database
+     * Initialises database
      */
     public static void init(){
         openConnection();
@@ -142,19 +142,24 @@ public class Database {
             Song song;
 
             while (results.next()) {
-                song = new Song();
-                song.setArtist(artists.get(results.getInt("artistid") - 1)); // TODO write code that retrieves the corresponding artist.
-                // Either do that by first getting a vector of all artists or by only getting the required artist.
-                // --> decided to go for retrieveAllArtists in order to keep sql queries to a minimum.
-                song.setSongID(results.getInt("songid"));
-                song.setName(results.getString("title"));
-                song.setCoverpath(results.getString("coverpath"));
-                song.setFilepath(results.getString("filepath"));
-                song.setStreams(results.getInt("streams"));
+                try {
+                    song = new Song();
+                    song.setArtist(artists.get(results.getInt("artistid") - 1)); // TODO write code that retrieves the corresponding artist.
+                    // Either do that by first getting a vector of all artists or by only getting the required artist.
+                    // --> decided to go for retrieveAllArtists in order to keep sql queries to a minimum.
+                    song.setSongID(results.getInt("songid"));
+                    song.setName(results.getString("title"));
+                    song.setCoverpath(results.getString("coverpath"));
+                    song.setFilepath(results.getString("filepath"));
+                    song.setStreams(results.getInt("streams"));
 
-                song.setGenre(genres.get(results.getInt("genreid") - 1));
+                    song.setGenre(genres.get(results.getInt("genreid") - 1));
 
-                songs.add(song);
+                    songs.add(song);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
             }
 
 
@@ -170,7 +175,7 @@ public class Database {
 
     }
 
-    public static Song retrieveSong(int songID) {
+    public static Song retrieveSong(int songID) throws SQLException{
         String selectStatement = "SELECT * FROM music WHERE songid=" + songID;
 
         Song song = null;
@@ -183,6 +188,7 @@ public class Database {
             ResultSet result = pstMusic.executeQuery();
 
             while (result.next()) {
+
                 song = new Song();
                 song.setArtist(retrieveArtist(result.getInt("artistid")));
                 song.setSongID(result.getInt("titleid"));
@@ -191,12 +197,8 @@ public class Database {
                 song.setFilepath(result.getString("filepath"));
                 song.setStreams(result.getInt("streams"));
                 song.setGenre(retrieveGenre(result.getInt("genreid")));
-
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables.getMessage());
         } finally {
             closeStatement(pstMusic, conn);
         }
@@ -221,10 +223,15 @@ public class Database {
             Artist artist;
 
             while (results.next()) {
-                artist = new Artist();
-                artist.setArtistID(results.getInt("artistid"));
-                artist.setName(results.getString("artistname"));
-                artists.add(artist);
+                try {
+                    artist = new Artist();
+                    artist.setArtistID(results.getInt("artistid"));
+                    artist.setName(results.getString("artistname"));
+                    artists.add(artist);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
             }
 
         } catch (SQLException throwables) {
@@ -255,11 +262,11 @@ public class Database {
                 artist.setName(result.getString("artistname"));
             }
 
+            return artist;
         } finally {
             closeStatement(pstArtist, conn);
         }
 
-        return artist;
     }
 
     public static Genre retrieveGenre(int genreID) throws SQLException {
@@ -302,10 +309,15 @@ public class Database {
             genres = new Vector<>();
 
             while (result.next()) {
-                genre = new Genre();
-                genre.setGenreID(result.getInt("genreid"));
-                genre.setName(result.getString("genrename"));
-                genres.add(genre);
+                try {
+                    genre = new Genre();
+                    genre.setGenreID(result.getInt("genreid"));
+                    genre.setName(result.getString("genrename"));
+                    genres.add(genre);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
             }
 
         } catch (SQLException throwables) {
