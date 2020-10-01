@@ -7,12 +7,13 @@ import java.io.*;
 public class Configuration {
 
     private static YamlConfig config;
-    private static String path = Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "config.yml";;
+    private static String path = (new File(Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getParentFile().getParentFile().toString() + File.separator + "config.yml").replace("file:", "");
 
     /**
      * Initializes configuration
      */
     public static void init() {
+        System.out.println(path);
         createIfNotExists();
 
         try{
@@ -34,7 +35,7 @@ public class Configuration {
 
         File configFile = new File(path);
 
-        if (configFile.exists()) {
+        if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
             } catch (IOException e) {
