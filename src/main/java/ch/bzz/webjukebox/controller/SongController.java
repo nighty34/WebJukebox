@@ -25,7 +25,7 @@ public class SongController {
 
             for (Song song : songs) {
                 if (!(files.contains(song.getFilepath()))) {
-                    System.out.println("Der Song: " + song.getName() + " existiert nicht");
+                    System.out.println("The song: " + song.getName() + " does not exist.");
                     removeSongs.add(song);
                 }
             }
@@ -34,7 +34,7 @@ public class SongController {
                 songs.remove(song);
             }
         }else{
-            System.out.println("Es wurden keine Files erkannt.");
+            System.out.println("No files were recognised.");
         }
 
         return songs;

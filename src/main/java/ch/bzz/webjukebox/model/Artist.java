@@ -1,6 +1,7 @@
 package ch.bzz.webjukebox.model;
 
 public class Artist {
+
     private int artistID;
     private String name;
 

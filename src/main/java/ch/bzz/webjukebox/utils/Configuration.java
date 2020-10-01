@@ -10,7 +10,7 @@ public class Configuration {
     private static String path = (new File(Configuration.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getParentFile().getParentFile().toString() + File.separator + "config.yml").replace("file:", "");
 
     /**
-     * Initializes configuration
+     * Initialises configuration
      */
     public static void init() {
         System.out.println(path);
@@ -40,7 +40,7 @@ public class Configuration {
                 configFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("The File could not be created at " + path);
+                System.out.println("The file could not be created at " + path);
             }
         }
 
