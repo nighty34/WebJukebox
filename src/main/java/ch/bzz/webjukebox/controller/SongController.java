@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ch.bzz.webjukebox.model.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
 import java.sql.Connection;
@@ -94,6 +95,45 @@ public class SongController {
 
 
         return filenames;
+    }
+
+    @PostMapping("/rest/add/song")
+    public void addSong(@RequestParam(value = "songName")String songName,
+                        @RequestParam(value = "filePath")String filePath,
+                        @RequestParam(value = "coverPath") String coverPath,
+                        @RequestParam(value = "artistID") int artistID,
+                        @RequestParam(value = "genreID") int genreID) {
+
+        Song song = new Song();
+        song.setName(songName);
+        song.setFilepath(filePath);
+        song.setCoverpath(coverPath);
+        song.setStreams(0);
+
+        Artist artist = Database.retrieveArtist(artistID);
+        song.setArtist(artist);
+
+        Genre genre = Database.retrieveGenre(genreID);
+        song.setGenre(genre);
+
+        Database.addSong(song);
+    }
+
+
+    @PostMapping("/rest/add/artist")
+    public void addArtist(@RequestParam(value = "artistName") String artistName) {
+        Artist artist = new Artist();
+        artist.setName(artistName);
+
+        Database.addArtist(artist);
+    }
+
+    @PostMapping("/rest/add/genre")
+    public void addGenre(@RequestParam(value = "genreName") String genreName) {
+        Genre genre = new Genre();
+        genre.setName(genreName);
+
+        Database.addGenre(genre);
     }
 
 }
