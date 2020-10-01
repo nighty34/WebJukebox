@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ch.bzz.webjukebox.model.*;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,24 @@ public class SongController {
 
     @GetMapping("/rest/allsongs")
     public Vector<Song> getAllSongs() {
+        Vector<Song> songs = Database.retrieveAllSongs();
+        try {
+            System.out.println(Thread.currentThread().getContextClassLoader().getResource("static").getPath());
+            Vector<String> files = getResourcesFiles("static/music");
 
-        return Database.retrieveAllSongs();
+            for (Song song:songs) {
+                if(!(files.contains(song.getFilepath()))){
+                    System.out.println("Der Song: " + song.getName() + " existiert nicht");
+                    songs.removeElement(song);
+                }
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+
+
+        return songs;
     }
 
     @PostMapping("/rest/plusonestream")
@@ -55,7 +72,31 @@ public class SongController {
         }catch (SQLException ex){
             ex.printStackTrace();
         }
+    }
 
+    private Vector<String> getResourcesFiles(String path) throws IOException {
+        Vector<String> filenames = new Vector<>();
+
+        try {
+            InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            String resource;
+            while((resource = reader.readLine())!=null){
+                filenames.add(resource);
+                System.out.println(resource);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
+
+
+
+        return filenames;
     }
 
 }
+
+
+
