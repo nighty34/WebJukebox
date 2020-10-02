@@ -1,0 +1,195 @@
+{
+  "song": [
+    {
+      "songID": "1",
+      "name": "RapGodddddddddd",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rap",
+      "artist": "Eminem"
+    }, {
+      "songID": "2",
+      "name": "Happy",
+      "filepath": "ressource/mp3/Bob Marley - Buffalo soldier.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Pop",
+      "artist": "Pharrell Williams"
+    },{
+      "songID": "3",
+      "name": "Abba",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rap",
+      "artist": "Eminem"
+    },{
+      "songID": "4",
+      "name": "Abbatest",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rap",
+      "artist": "Eminem"
+    },{
+      "songID": "5",
+      "name": "t",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rap",
+      "artist": "Eminem"
+    },{
+      "songID": "6",
+      "name": "asdas",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rock",
+      "artist": "Eminem"
+    },{
+      "songID": "7",
+      "name": "asasdsas",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rock",
+      "artist": "Eminem"
+    },{
+      "songID": "8",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Rock",
+      "artist": "Eminem"
+    },{
+      "songID": "9",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "House",
+      "artist": "Eminem"
+    },{
+      "songID": "10",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "House",
+      "artist": "Eminem"
+    },{
+      "songID": "11",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "House",
+      "artist": "Eminem"
+    },{
+      "songID": "12",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "House",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "House",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    },{
+      "songID": "13",
+      "name": "g",
+      "filepath": "ressource/mp3/abba.mp3",
+      "coverpath": "ressource/images/abbacover.jpg",
+      "streams": "0",
+      "genre": "Metal",
+      "artist": "Eminem"
+    }
+  ],
+  "Genre": [
+    {
+      "name": "Rap"
+    },
+    {
+      "name": "Pop"
+    },
+    {
+      "name": "Rock"
+    },
+    {
+      "name": "Metal"
+    },
+    {
+      "name": "House"
+    },
+    {
+      "name": "Punk"
+    }
+  ],
+  "Artist": [
+    {
+      "artistID": "1",
+      "name": "Eminem"
+    },
+    {
+      "songID": "2",
+      "name": "Pharrell Williams"
+    }
+  ]
+}

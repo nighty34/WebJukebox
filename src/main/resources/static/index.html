@@ -524,11 +524,11 @@
     getdata();
 
     var isplaying = false;
-    var audio1 = new Audio(null);
+    var audio1 = new Audio("music/test.mp3");
     var posSlider = document.getElementById("myRange");
     var volSlider = document.getElementById("myVol");
 
-    function _getdata() {
+    /*function _getdata() {
 	
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -681,39 +681,54 @@
         };
         xhttp.open("GET", "ressource/json/test.json", true);
         xhttp.send();
-    }
+    }*/
+
 	
 	function getdata() {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/rest/allsongs/", false);
+
+
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var javaobj = JSON.parse(xmlHttp.response);
+
+
+                var songs = [[], []];
+                var songsiter = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+
+                for (var i = 0; i < 20; i++) {
+                    //songs[javaobj[i].genre.genreID][songsiter[i]] = javaobj[i];
+                    var name = javaobj[i].name;
+                    var genreID = javaobj[i].genre.genreID;
+
+                    document.getElementById("txt" + genreID + songsiter[genreID]).innerHTML = name;
+                    document.getElementById("table" + genreID + songsiter[genreID]).className = "tabbeleBox tableVisable ";
+                    document.getElementById("img" + genreID + songsiter[genreID]).src = "music/" + javaobj[i].coverpath;
+                    document.getElementById("txt" + genreID + songsiter[genreID]).className = i;
+                    var newJavaObj = javaobj;
+                    document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function () {
+                        playSongat(newJavaObj, i);
+                    }, false);
+                    songsiter[genreID]++;
+                }
+            }
+        };
+        xmlHttp.open("GET", "/rest/allsongs/", true);
         xmlHttp.send(null);
-        var javaobj = JSON.parse(xmlHttp.response);
 
-        var songs = [[],[]];
-        var songsiter = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    }
 
+	//document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
 
-        for (var i = 0; i < 20; i++) {
-            //songs[javaobj[i].genre.genreID][songsiter[i]] = javaobj[i];
-            var genreID = javaobj[i].genre.genreID;
-            document.getElementById("txt" + genreID + songsiter[genreID]).innerHTML = javaobj[i].name;
-            document.getElementById("table" + genreID + songsiter[genreID]).className = "tabbeleBox tableVisable ";
-            document.getElementById("img" + genreID + songsiter[genreID]).src = "music/" + javaobj[i].coverpath;
-            document.getElementById("txt" + genreID + songsiter[genreID]).className = i;
-            document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function (i) {
-                document.getElementById("imgCover").src = "music/" + javaobj[i.toElement.className].coverpath;
-                document.getElementById("songTitle").innerText = javaobj[i.toElement.className].name;
-                audio1 = new Audio("music/" + javaobj[i.toElement.className].filepath);
-                var url = "/rest/plusonestream";
-                xmlHttp.open("POST", url, true);
-                xmlHttp.send("songID=" + javaobj[i].songID);
-            }, false);
-            songsiter[genreID]++;
-        }
-
-	}
-
-	document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
+    function playSongat(javaobj, i) {
+        document.getElementById("imgCover").src = "music/" + javaobj[i].coverpath;
+        document.getElementById("songTitle").innerText = javaobj[i].name;
+        audio1 = new Audio("music/" + javaobj[i].filepath);
+        var url = "/rest/plusonestream";
+        xmlHttp.open("POST", url, true);
+        xmlHttp.send("songID=" + javaobj[i].songID);
+    }
 
     function getCount(object) {
         var keys = Object.keys(object);
