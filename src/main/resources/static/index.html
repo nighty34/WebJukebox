@@ -503,7 +503,7 @@
         <tr>
             <td><img id="imgCover" src="ressource/images/white.png" width=60px height=60px></td>
             <td><input id="imgPlayer" type="image" src="ressource/images/play-button.png"
-                       width=20px height=20px></td>
+                       width=20px height=20px onclick="switchOnOff()" ></td>
             <td>
                 <table>
                     <tr>
@@ -514,7 +514,7 @@
                     </tr>
                 </table>
             </td>
-            <td id="anzStreams"></td>
+            <td id="anzStreams"><p>Anzahl Streams: </p><p id="streamsid" class="b" float="left"></td>
             <td><input type="range" min="0" max="100" value="100" class="slider" id="myVol"></td>
         </tr>
     </table>
@@ -524,167 +524,13 @@
     getdata();
 
     var isplaying = false;
-    var audio1 = new Audio("music/test.mp3");
+    var audio1 = new Audio(null);
     var posSlider = document.getElementById("myRange");
     var volSlider = document.getElementById("myVol");
 
-    /*function _getdata() {
-	
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState === 4 && xhttp.status === 200) {
-                var javaobj = JSON.parse(xhttp.response);
-                var array = [];
-                for (var i = 0; i < getCount(javaobj.song); i++) {
-                    array.push(javaobj.song[i]);
-                }
-
-                var countPop = 0;
-                var countRap = 0;
-                var countRock = 0;
-                var countMetal = 0;
-                var countPunk = 0;
-                var countHouse = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].genre === "Rap") {
-                        countRap++;
-                    }
-                    if (array[i].genre === "Pop") {
-                        countPop++;
-                    }
-                    if (array[i].genre === "Rock") {
-                        countRock++;
-                    }
-                    if (array[i].genre === "Metal") {
-                        countMetal++;
-                    }
-                    if (array[i].genre === "Punk") {
-                        countPunk++;
-                    }
-                    if (array[i].genre === "House") {
-                        countHouse++;
-                    }
-                }
-                var countBiggest = [countRap, countHouse, countPop, countPunk, countMetal, countRock];
-                countBiggest.sort(function (a, b) {
-                    return a - b
-                });
-                console.log(countBiggest);
-                var biggest = countBiggest[5];
-                console.log(biggest);
-
-                for (var i = 0; i < biggest; i++) {
-                    for (var j = 0; j < 6; j++) {
-                        document.getElementById("table" + j + i).className = "tabbeleBox tableInviable";
-                    }
-                }
-
-                var locRap = 0;
-                var locPop = 0;
-                var locRock = 0;
-                var locMetal = 0;
-                var locHouse = 0;
-                var locPunk = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].genre === "Rap") {
-                        document.getElementById("txt" + "0" + locRap).innerHTML = array[i].name;
-                        document.getElementById("table" + "0" + locRap).className = "tabbeleBox tableVisable ";
-                        document.getElementById("img" + "0" + locRap).src = array[i].coverpath;
-                        document.getElementById("txt" + "0" + locRap).className = i;
-                        document.getElementById("txt" + "0" + locRap).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locRap++;
-                    }
-                    if (array[i].genre === "Pop") {
-                        document.getElementById("txt" + "1" + locPop).innerHTML = array[i].name;
-                        document.getElementById("table" + "1" + locPop).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "1" + locPop).src = array[i].coverpath;
-                        document.getElementById("txt" + "1" + locPop).className = i;
-                        document.getElementById("txt" + "1" + locPop).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locPop++;
-                    }
-                    if (array[i].genre === "Rock") {
-                        document.getElementById("txt" + "2" + locRock).innerHTML = array[i].name;
-                        document.getElementById("table" + "2" + locRock).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "2" + locRock).src = array[i].coverpath;
-                        document.getElementById("txt" + "2" + locRock).className = i;
-                        document.getElementById("txt" + "2" + locRock).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locRock++;
-                    }
-                    if (array[i].genre === "Metal") {
-                        document.getElementById("txt" + "3" + locMetal).innerHTML = array[i].name;
-                        document.getElementById("table" + "3" + locMetal).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "3" + locMetal).src = array[i].coverpath;
-                        document.getElementById("txt" + "3" + locMetal).className = i;
-                        document.getElementById("txt" + "3" + locMetal).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locMetal++;
-                    }
-                    if (array[i].genre === "Punk") {
-                        document.getElementById("txt" + "5" + locPunk).innerHTML = array[i].name;
-                        document.getElementById("table" + "5" + locPunk).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "5" + locPunk).src = array[i].coverpath;
-                        document.getElementById("txt" + "5" + locPunk).className = i;
-                        document.getElementById("txt" + "5" + locPunk).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locPunk++;
-                    }
-                    if (array[i].genre === "House") {
-                        document.getElementById("txt" + "4" + locHouse).innerHTML = array[i].name;
-                        document.getElementById("table" + "4" + locHouse).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "4" + locHouse).src = array[i].coverpath;
-                        document.getElementById("txt" + "4" + locHouse).className = i;
-                        document.getElementById("txt" + "4" + locHouse).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio(array[i.toElement.className].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locHouse++;
-                    }
-                }
-            }
-        };
-        xhttp.open("GET", "ressource/json/test.json", true);
-        xhttp.send();
-    }*/
-
 	
 	function getdata() {
+
         var xmlHttp = new XMLHttpRequest();
 
 
@@ -698,7 +544,6 @@
 
 
                 for (var i = 0; i < 20; i++) {
-                    //songs[javaobj[i].genre.genreID][songsiter[i]] = javaobj[i];
                     var name = javaobj[i].name;
                     var genreID = javaobj[i].genre.genreID -1;
 
@@ -718,13 +563,17 @@
         xmlHttp.open("GET", "/rest/allsongs/", true);
         xmlHttp.send();
 
+
+
+
     }
 
-	document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
+
 
     function playSongat(obj) {
         document.getElementById("imgCover").src = "music/" + obj.coverpath;
         document.getElementById("songTitle").innerText = obj.name;
+        document.getElementById("streamsid").innerText = obj.streams;
         audio1 = new Audio("music/" + obj.filepath);
         xmlHttp = new XMLHttpRequest();
         var url = "/rest/plusonestream";
