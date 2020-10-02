@@ -10,7 +10,6 @@
     <title>TITLE</title>
 </head>
 <body>
-
 <section>
     <img src="ressource/images/Logo1.jpg">
 </section>
@@ -491,20 +490,23 @@
         </td>
     </tr>
     <tr>
-        <td class="tbl tblGenere"><p>Rap</p></td>
-        <td class="tbl tblGenere"><p>Pop</p></td>
-        <td class="tbl tblGenere"><p>Rock</p></td>
-        <td class="tbl tblGenere"><p>Metal</p></td>
-        <td class="tbl tblGenere"><p>House</p></td>
-        <td class="tbl tblGenere"><p>Punk</p></td>
+        <td class="tbl tblGenere"><p id="genre01">Rap</p></td>
+        <td class="tbl tblGenere"><p id="genre02">Pop</p></td>
+        <td class="tbl tblGenere"><p id="genre03">Rock</p></td>
+        <td class="tbl tblGenere"><p id="genre04">Metal</p></td>
+        <td class="tbl tblGenere"><p id="genre05">Soul</p></td>
+        <td class="tbl tblGenere"><p id="genre06">Punk</p></td>
     </tr>
 </table>
+
+
+
 <section class="section">
     <table id="player">
         <tr>
             <td><img id="imgCover" src="ressource/images/white.png" width=60px height=60px></td>
-            <td><input id="imgPlayer" type="image" src="ressource/images/play-button.png" onclick="switchOnOff()"
-                       width=20px height=20px></td>
+            <td><input id="imgPlayer" type="image" src="ressource/images/play-button.png"
+                       width=20px height=20px onclick="switchOnOff()" ></td>
             <td>
                 <table>
                     <tr>
@@ -517,8 +519,6 @@
             </td>
             <td id="anzStreams"><p>Anzahl Streams: </p><p id="streamsid" class="b" float="left"></td>
             <td><input type="range" min="0" max="100" value="100" class="slider" id="myVol"></td>
-            <td><input id="muteBttn" type="image" src="ressource/images/mute.png"
-                       width=20px height=20px></td>
         </tr>
     </table>
 </section>
@@ -526,205 +526,98 @@
 <script>
     getdata();
 
-
     var isplaying = false;
     var audio1 = new Audio(null);
     var posSlider = document.getElementById("myRange");
     var volSlider = document.getElementById("myVol");
 
-    function getdata() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState === 4 && xhttp.status === 200) {
-                var javaobj = JSON.parse(xhttp.response);
+	
+	function getdata() {
+
+        var xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var javaobj = JSON.parse(xmlHttp.response);
                 var array = [];
-                for (var i = 0; i < getCount(javaobj); i++) {
-                    array.push(javaobj[i]);
+
+                var songsiter = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+
+                for (var i = 0; i < getCount(javaobj.song); i++) {
+                    array.push(javaobj.song[i]);
                 }
 
-                console.log(array);
-                var countPop = 0;
-                var countRap = 0;
-                var countRock = 0;
-                var countMetal = 0;
-                var countPunk = 0;
-                var countHouse = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].genre.genreID === 1) {
-                        countRap++;
-                    }
-                    if (array[i].genre.genreID === 2) {
-                        countPop++;
-                    }
-                    if (array[i].genre.genreID === 3) {
-                        countRock++;
-                    }
-                    if (array[i].genre.genreID === 4) {
-                        countMetal++;
-                    }
-                    if (array[i].genre.genreID === 5) {
-                        countPunk++;
-                    }
-                    if (array[i].genre.genreID === 6) {
-                        countHouse++;
-                    }
-                }
-                var countBiggest = [countRap, countHouse, countPop, countPunk, countMetal, countRock];
-                countBiggest.sort(function (a, b) {
-                    return a - b
-                });
-
-                var biggest = countBiggest[5];
 
 
-                for (var i = 0; i < biggest; i++) {
-                    for (var j = 0; j < 6; j++) {
-                        document.getElementById("table" + j + i).className = "tabbeleBox tableInviable";
-                    }
-                }
+                for (var i = 0; i < 20; i++) {
+                    var name = javaobj[i].name;
+                    var genreID = javaobj[i].genre.genreID -1;
 
-                console.log(biggest);
+                    document.getElementById("txt" + genreID + songsiter[genreID]).innerHTML = name;
+                    document.getElementById("table" + genreID + songsiter[genreID]).className = "tabbeleBox tableVisable ";
+                    document.getElementById("img" + genreID + songsiter[genreID]).src = "music/" + javaobj[i].coverpath;
 
-                var locRap = 0;
-                var locPop = 0;
-                var locRock = 0;
-                var locMetal = 0;
-                var locHouse = 0;
-                var locPunk = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].genre.genreID === 1) {
-                        console.log("raP");
-                        document.getElementById("txt" + "0" + locRap).innerHTML = array[i].name;
-                        document.getElementById("table" + "0" + locRap).className = "tabbeleBox tableVisable ";
-                        document.getElementById("img" + "0" + locRap).src = "music/" + array[i].coverpath;
-                        document.getElementById("txt" + "0" + locRap).className = i;
-                        document.getElementById("txt" + "0" + locRap).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" + array[i].coverpath;
-                            document.getElementById("songTitle").innerText = array[i].name;
-                            audio1 = new Audio("music/" + array[i].filepath);
-                            var url = "localhost:8080/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locRap++;
-                    }
-                    if (array[i].genre.genreID === 2) {
-                        console.log("POP");
-                        document.getElementById("txt" + "1" + locPop).innerHTML = array[i].name;
-                        document.getElementById("table" + "1" + locPop).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "1" + locPop).src = "music/" + array[i].coverpath;
-                        document.getElementById("txt" + "1" + locPop).className = i;
-                        document.getElementById("txt" + "1" + locPop).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" + array[i].coverpath;
-                            document.getElementById("songTitle").innerText = array[i].name;
-                            audio1 = new Audio("music/" +  array[i].filepath);
-                            var url = "/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i].songID);
-                        }, false);
-                        locPop++;
-                    }
-                    if (array[i].genre.genreID === 3) {
-                        console.log("Rock");
-                        document.getElementById("txt" + "2" + locRock).innerHTML = array[i].name;
-                        document.getElementById("table" + "2" + locRock).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "2" + locRock).src = "music/" + array[i].coverpath;
-                        document.getElementById("txt" + "2" + locRock).className = i;
-                        document.getElementById("txt" + "2" + locRock).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" +  array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio("music/" +  array[i.toElement.className].filepath);
-                            var url = "/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locRock++;
-                    }
-                    if (array[i].genre.genreID === 4) {
-                        document.getElementById("txt" + "3" + locMetal).innerHTML = array[i].name;
-                        document.getElementById("table" + "3" + locMetal).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "3" + locMetal).src = "music/" +  array[i].coverpath;
-                        document.getElementById("txt" + "3" + locMetal).className = i;
-                        document.getElementById("txt" + "3" + locMetal).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" + array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio("music/" + array[i.toElement.className].filepath);
-                            var url = "/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locMetal++;
-                    }
-                    if (array[i].genre.genreID === 5) {
-                        document.getElementById("txt" + "5" + locPunk).innerHTML = array[i].name;
-                        document.getElementById("table" + "5" + locPunk).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "5" + locPunk).src = "music/" + array[i].coverpath;
-                        document.getElementById("txt" + "5" + locPunk).className = i;
-                        document.getElementById("txt" + "5" + locPunk).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" + array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio("music/" + array[i.toElement.className].filepath);
-                            var url = "/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locPunk++;
-                    }
-                    if (array[i].genre.genreID === 6) {
-                        document.getElementById("txt" + "4" + locHouse).innerHTML = array[i].name;
-                        document.getElementById("table" + "4" + locHouse).className = "tabbeleBox tableVisable";
-                        document.getElementById("img" + "4" + locHouse).src = "music/" + array[i].coverpath;
-                        document.getElementById("txt" + "4" + locHouse).className = i;
-                        document.getElementById("txt" + "4" + locHouse).addEventListener("click", function (i) {
-                            document.getElementById("imgCover").src = "music/" + array[i.toElement.className].coverpath;
-                            document.getElementById("songTitle").innerText = array[i.toElement.className].name;
-                            audio1 = new Audio("music/" + array[i.toElement.className].filepath);
-                            var url = "/rest/plusonestream";
-                            xhttp.open("POST", url, true);
-                            xhttp.send("songID=" + array[i.toElement.className].songID);
-                        }, false);
-                        locHouse++;
-                    }
+                    var actObj = javaobj[i];
+                    document.getElementById("txt" + genreID + songsiter[genreID]).className = i;
+                    document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function (i) {
+                        document.getElementById("imgCover").src = "music/" + javaobj[i.toElement.className].coverpath;
+                        document.getElementById("songTitle").innerText = array[i.toElement.className].name;
+                        document.getElementById("streamsid").innerText = array[i.toElement.className].streams;
+                        audio1 = new Audio("music/" + array[i.toElement.className].filepath);
+                        xmlHttp = new XMLHttpRequest();
+                        var url = "/rest/plusonestream";
+                        xmlHttp.open("POST", url, true);
+                        var fromdata = new FormData();
+                        fromdata.append("songID", array[i.toElement.className].songID);
+                        xmlHttp.send(fromdata);
+
+
+                        var lol = actObj;
+                        //playSongat(clone(lol));
+                    }, false);
+                    songsiter[genreID]++;
                 }
             }
         };
-        xhttp.open("GET", "/rest/allsongs/", true);
-        xhttp.send();
+        xmlHttp.open("GET", "/rest/allsongs/", true);
+        xmlHttp.send();
+    }
+
+
+
+    function playSongat(obj) {
+        document.getElementById("imgCover").src = "music/" + obj.coverpath;
+        document.getElementById("songTitle").innerText = obj.name;
+        document.getElementById("streamsid").innerText = obj.streams;
+        audio1 = new Audio("music/" + obj.filepath);
+        xmlHttp = new XMLHttpRequest();
+        var url = "/rest/plusonestream";
+        xmlHttp.open("POST", url, true);
+        var fromdata = new FormData();
+        fromdata.append("songID", obj.songID);
+        xmlHttp.send(fromdata);
     }
 
     function getCount(object) {
         var keys = Object.keys(object);
         for (var i = 0, len = keys.length; i < len; i++) {
         }
-        console.log(i);
         return i;
     }
 
     function setSliderMax() {
-        posSlider.setAttribute('max', audio1.duration);
+        posSlider.setAttribute('max', audio.duration);
         posSlider.setAttribute('min', 0);
     }
 
     function setVol() {
         audio1.volume = volSlider.value / 100;
     }
-    function setVol0() {
-        if (audio1.volume === 0){
-            audio1.volume = 1;
-            document.getElementById("myVol").src = "ressource/images/volume.png";
-            console.log("1");
-        } else{
-            audio1.volume = 0;
-            console.log("2");
-            document.getElementById("myVol").src = "ressource/images/pause.png";
-            volSlider.src = "ressource/images/pause.png";
-        }
-    }
 
     function switchOnOff() {
         audio1.addEventListener("timeupdate", setSliderVal);
         audio1.addEventListener("loadedmetadata", setSliderMax);
-        document.getElementById("muteBttn").addEventListener("click", setVol0)
         volSlider.addEventListener("input", setVol);
         if (isplaying === false) {
             isplaying = true;
@@ -733,6 +626,7 @@
         } else {
             audio1.pause();
             isplaying = false;
+            console.log(isplaying);
             document.getElementById("imgPlayer").src = "ressource/images/play-button.png";
         }
     }
@@ -741,13 +635,15 @@
         posSlider.value = audio1.currentTime;
     }
 
-    /**
-     * hat nicht funktioniert wie gewünscht
-     posSlider.addEventListener("input", setPos)
-     function setPos() {
-        audio1.currentTime = posSlider.value;
+    function clone(obj) {
+        if (null == obj || "object" != typeof obj) return obj;
+        var copy = obj.constructor();
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+        }
+        return copy;
     }
-     */
+
 
 </script>
 </body>
