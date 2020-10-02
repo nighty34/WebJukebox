@@ -700,34 +700,36 @@
                 for (var i = 0; i < 20; i++) {
                     //songs[javaobj[i].genre.genreID][songsiter[i]] = javaobj[i];
                     var name = javaobj[i].name;
-                    var genreID = javaobj[i].genre.genreID;
+                    var genreID = javaobj[i].genre.genreID -1;
 
                     document.getElementById("txt" + genreID + songsiter[genreID]).innerHTML = name;
                     document.getElementById("table" + genreID + songsiter[genreID]).className = "tabbeleBox tableVisable ";
                     document.getElementById("img" + genreID + songsiter[genreID]).src = "music/" + javaobj[i].coverpath;
                     document.getElementById("txt" + genreID + songsiter[genreID]).className = i;
-                    var newJavaObj = javaobj;
+                    var actObj = javaobj[i];
                     document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function () {
-                        playSongat(newJavaObj, i);
+                        var lol = actObj;
+                        playSongat(lol);
                     }, false);
                     songsiter[genreID]++;
                 }
             }
         };
         xmlHttp.open("GET", "/rest/allsongs/", true);
-        xmlHttp.send(null);
+        xmlHttp.send();
 
     }
 
-	//document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
+	document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
 
-    function playSongat(javaobj, i) {
-        document.getElementById("imgCover").src = "music/" + javaobj[i].coverpath;
-        document.getElementById("songTitle").innerText = javaobj[i].name;
-        audio1 = new Audio("music/" + javaobj[i].filepath);
+    function playSongat(obj) {
+        document.getElementById("imgCover").src = "music/" + obj.coverpath;
+        document.getElementById("songTitle").innerText = obj.name;
+        audio1 = new Audio("music/" + obj.filepath);
+        xmlHttp = new XMLHttpRequest();
         var url = "/rest/plusonestream";
         xmlHttp.open("POST", url, true);
-        xmlHttp.send("songID=" + javaobj[i].songID);
+        xmlHttp.send("songID=" + obj.songID);
     }
 
     function getCount(object) {
