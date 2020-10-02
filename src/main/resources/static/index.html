@@ -10,6 +10,9 @@
     <title>TITLE</title>
 </head>
 <body>
+<section>
+    <img src="ressource/images/Logo1.jpg">
+</section>
 <table>
 
     <tr>
@@ -487,12 +490,12 @@
         </td>
     </tr>
     <tr>
-        <td class="tbl tblGenere"><p>Rap</p></td>
-        <td class="tbl tblGenere"><p>Pop</p></td>
-        <td class="tbl tblGenere"><p>Rock</p></td>
-        <td class="tbl tblGenere"><p>Metal</p></td>
-        <td class="tbl tblGenere"><p>House</p></td>
-        <td class="tbl tblGenere"><p>Punk</p></td>
+        <td class="tbl tblGenere"><p id="genre01">Rap</p></td>
+        <td class="tbl tblGenere"><p id="genre02">Pop</p></td>
+        <td class="tbl tblGenere"><p id="genre03">Rock</p></td>
+        <td class="tbl tblGenere"><p id="genre04">Metal</p></td>
+        <td class="tbl tblGenere"><p id="genre05">Soul</p></td>
+        <td class="tbl tblGenere"><p id="genre06">Punk</p></td>
     </tr>
 </table>
 
@@ -533,13 +536,10 @@
 
         var xmlHttp = new XMLHttpRequest();
 
-
-        xmlHttp.onreadystatechange = function () {
+            xmlHttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var javaobj = JSON.parse(xmlHttp.response);
 
-
-                var songs = [[], []];
                 var songsiter = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 
@@ -554,7 +554,7 @@
                     var actObj = javaobj[i];
                     document.getElementById("txt" + genreID + songsiter[genreID]).addEventListener("click", function () {
                         var lol = actObj;
-                        playSongat(lol);
+                        playSongat(clone(lol));
                     }, false);
                     songsiter[genreID]++;
                 }
@@ -562,10 +562,6 @@
         };
         xmlHttp.open("GET", "/rest/allsongs/", true);
         xmlHttp.send();
-
-
-
-
     }
 
 
@@ -619,13 +615,15 @@
         posSlider.value = audio1.currentTime;
     }
 
-    /**
-     * hat nicht funktioniert wie gewünscht
-     posSlider.addEventListener("input", setPos)
-     function setPos() {
-        audio1.currentTime = posSlider.value;
+    function clone(obj) {
+        if (null == obj || "object" != typeof obj) return obj;
+        var copy = obj.constructor();
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+        }
+        return copy;
     }
-     */
+
 
 </script>
 </body>
