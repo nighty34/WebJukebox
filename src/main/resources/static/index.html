@@ -502,7 +502,7 @@
     <table id="player">
         <tr>
             <td><img id="imgCover" src="ressource/images/white.png" width=60px height=60px></td>
-            <td><input id="imgPlayer" type="image" src="ressource/images/play-button.png" onclick="switchOnOff()"
+            <td><input id="imgPlayer" type="image" src="ressource/images/play-button.png"
                        width=20px height=20px></td>
             <td>
                 <table>
@@ -712,6 +712,8 @@
         }
 
 	}
+
+	document.getElementById("imgPlayer").addEventListener("click", switchOnOff());
 
     function getCount(object) {
         var keys = Object.keys(object);
