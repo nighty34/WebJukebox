@@ -729,7 +729,9 @@
         xmlHttp = new XMLHttpRequest();
         var url = "/rest/plusonestream";
         xmlHttp.open("POST", url, true);
-        xmlHttp.send("songID=" + obj.songID);
+        var fromdata = new FormData();
+        fromdata.append("songID", obj.songID);
+        xmlHttp.send(fromdata);
     }
 
     function getCount(object) {
